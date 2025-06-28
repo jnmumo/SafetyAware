@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Debug Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .warning { background-color: #fff3cd; color: #856404; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #007bff;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Safety Aware Circle - Database Debug Tool</h1>
+        <p>This tool helps diagnose database issues in your deployed application.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>📊 Database Status</h3>
+                <div id="dbStatus">Click "Check Database" to start</div>
+                <button onclick="checkDatabase()" id="checkDbBtn">Check Database</button>
+            </div>
+            
+            <div class="card">
+                <h3>📚 Lesson Content</h3>
+                <div id="lessonStatus">Not checked yet</div>
+                <button onclick="checkLessons()" id="checkLessonsBtn">Check Lessons</button>
+            </div>
+            
+            <div class="card">
+                <h3>🔧 Quick Actions</h3>
+                <button onclick="testConnection()" id="testConnBtn">Test Connection</button>
+                <button onclick="showSampleData()" id="sampleDataBtn">Show Sample Data</button>
+                <button onclick="checkMigrations()" id="migrationsBtn">Check Migrations</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📋 Detailed Results</h2>
+        <div id="results"></div>
+    </div>
+
+    <div class="container">
+        <h2>🛠️ SQL Commands to Fix Issues</h2>
+        <div id="sqlCommands"></div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2';
+
+        // Initialize Supabase client
+        const supabaseUrl = 'https://vnylsakgykatzlmlfgam.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZueWxzYWtneWthdHpsbWxmZ2FtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1MzIwNzMsImV4cCI6MjA2NjEwODA3M30.E7-pkNZtgp0JLtvw_mOF8ycPsdtytBPnbT9GyytW7LI';
+        
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        window.testConnection = async function() {
+            const btn = document.getElementById('testConnBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Testing...';
+            
+            try {
+                const { data, error } = await supabase
+                    .from('lessons')
+                    .select('count')
+                    .limit(1);
+                
+                if (error) {
+                    showResult('error', 'Connection Test Failed', error.message);
+                } else {
+                    showResult('success', 'Connection Test Passed', 'Successfully connected to Supabase database');
+                }
+            } catch (err) {
+                showResult('error', 'Connection Error', err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Test Connection';
+            }
+        };
+
+        window.checkDatabase = async function() {
+            const btn = document.getElementById('checkDbBtn');
+            const status = document.getElementById('dbStatus');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Checking...';
+            status.innerHTML = '<span class="loading"></span> Checking database status...';
+            
+            try {
+                const tables = ['lessons', 'lesson_age_groups', 'lesson_key_points', 'lesson_scenarios', 'lesson_quiz_questions'];
+                const results = {};
+                
+                for (const table of tables) {
+                    try {
+                        const { count, error } = await supabase
+                            .from(table)
+                            .select('*', { count: 'exact', head: true });
+                        
+                        results[table] = {
+                            exists: !error,
+                            count: count || 0,
+                            error: error?.message
+                        };
+                    } catch (err) {
+                        results[table] = {
+                            exists: false,
+                            count: 0,
+                            error: err.message
+                        };
+                    }
+                }
+                
+                let statusHtml = '<div class="grid">';
+                let allGood = true;
+                
+                for (const [table, result] of Object.entries(results)) {
+                    const statusClass = result.exists ? (result.count > 0 ? 'success' : 'warning') : 'error';
+                    if (!result.exists || result.count === 0) allGood = false;
+                    
+                    statusHtml += `
+                        <div class="status ${statusClass}">
+                            <strong>${table}</strong><br>
+                            ${result.exists ? `✅ Exists (${result.count} records)` : `❌ Missing: ${result.error}`}
+                        </div>
+                    `;
+                }
+                statusHtml += '</div>';
+                
+                status.innerHTML = statusHtml;
+                
+                if (allGood) {
+                    showResult('success', 'Database Check Complete', 'All tables exist and contain data');
+                } else {
+                    showResult('warning', 'Database Issues Found', 'Some tables are missing or empty');
+                    generateSQLFix(results);
+                }
+                
+            } catch (err) {
+                status.innerHTML = `<div class="status error">Error: ${err.message}</div>`;
+                showResult('error', 'Database Check Failed', err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Check Database';
+            }
+        };
+
+        window.checkLessons = async function() {
+            const btn = document.getElementById('checkLessonsBtn');
+            const status = document.getElementById('lessonStatus');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Checking...';
+            status.innerHTML = '<span class="loading"></span> Checking lesson content...';
+            
+            try {
+                // Check lessons by age group
+                const ageGroups = ['5-10', '11-15', '16-19'];
+                const results = {};
+                
+                for (const ageGroup of ageGroups) {
+                    const { data, error, count } = await supabase
+                        .from('lessons')
+                        .select(`
+                            id,
+                            title,
+                            lesson_age_groups!inner (age_group)
+                        `, { count: 'exact' })
+                        .eq('lesson_age_groups.age_group', ageGroup);
+                    
+                    results[ageGroup] = {
+                        count: count || 0,
+                        lessons: data || [],
+                        error: error?.message
+                    };
+                }
+                
+                let statusHtml = '<div class="grid">';
+                let totalLessons = 0;
+                
+                for (const [ageGroup, result] of Object.entries(results)) {
+                    totalLessons += result.count;
+                    const statusClass = result.count > 0 ? 'success' : 'warning';
+                    
+                    statusHtml += `
+                        <div class="status ${statusClass}">
+                            <strong>Ages ${ageGroup}</strong><br>
+                            ${result.count} lessons available
+                        </div>
+                    `;
+                }
+                statusHtml += '</div>';
+                
+                status.innerHTML = statusHtml;
+                
+                if (totalLessons > 0) {
+                    showResult('success', 'Lesson Check Complete', `Found ${totalLessons} total lessons across all age groups`);
+                } else {
+                    showResult('error', 'No Lessons Found', 'The database contains no lesson content');
+                    generateLessonInsertSQL();
+                }
+                
+            } catch (err) {
+                status.innerHTML = `<div class="status error">Error: ${err.message}</div>`;
+                showResult('error', 'Lesson Check Failed', err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Check Lessons';
+            }
+        };
+
+        window.showSampleData = async function() {
+            const btn = document.getElementById('sampleDataBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Loading...';
+            
+            try {
+                const { data: lessons, error } = await supabase
+                    .from('lessons')
+                    .select('id, title, category, difficulty')
+                    .limit(5);
+                
+                if (error) {
+                    showResult('error', 'Sample Data Error', error.message);
+                } else if (lessons && lessons.length > 0) {
+                    showResult('info', 'Sample Lesson Data', `<pre>${JSON.stringify(lessons, null, 2)}</pre>`);
+                } else {
+                    showResult('warning', 'No Sample Data', 'No lessons found in the database');
+                }
+            } catch (err) {
+                showResult('error', 'Sample Data Error', err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Show Sample Data';
+            }
+        };
+
+        window.checkMigrations = async function() {
+            const btn = document.getElementById('migrationsBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Checking...';
+            
+            try {
+                // Check if the schema_migrations table exists
+                const { data, error } = await supabase
+                    .from('schema_migrations')
+                    .select('version')
+                    .order('version');
+                
+                if (error) {
+                    showResult('warning', 'Migration Check', 'Cannot access schema_migrations table. This might be normal for some Supabase setups.');
+                } else {
+                    showResult('info', 'Applied Migrations', `<pre>${JSON.stringify(data, null, 2)}</pre>`);
+                }
+            } catch (err) {
+                showResult('warning', 'Migration Check', 'Migration table check not available');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Check Migrations';
+            }
+        };
+
+        function showResult(type, title, content) {
+            const results = document.getElementById('results');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            results.innerHTML += `
+                <div class="status ${type}">
+                    <strong>[${timestamp}] ${title}</strong><br>
+                    ${content}
+                </div>
+            `;
+            
+            results.scrollTop = results.scrollHeight;
+        }
+
+        function generateSQLFix(results) {
+            const sqlCommands = document.getElementById('sqlCommands');
+            let sql = '';
+            
+            if (!results.lessons?.exists || results.lessons?.count === 0) {
+                sql += `
+<h3>🔧 Fix Missing Lesson Data</h3>
+<p>Run this SQL in your Supabase SQL Editor to populate the lessons:</p>
+<pre>
+-- Insert sample lessons for testing
+INSERT INTO lessons (id, title, description, duration_minutes, difficulty, category, introduction_text, tips) VALUES
+('stranger-danger-basics', 'Stranger Danger Basics', 'Understanding who strangers are and how to stay safe around them', 12, 'easy', 'physical',
+ 'Not all strangers are dangerous, but it''s important to know the safety rules when meeting new people.',
+ ARRAY['Stay close to trusted adults in public places', 'Never go anywhere with someone you don''t know', 'If a stranger approaches you, find a trusted adult right away'])
+ON CONFLICT (id) DO NOTHING;
+
+-- Insert age groups for the lesson
+INSERT INTO lesson_age_groups (lesson_id, age_group) VALUES
+('stranger-danger-basics', '5-10')
+ON CONFLICT DO NOTHING;
+
+-- Insert key points
+INSERT INTO lesson_key_points (lesson_id, point_text, order_index) VALUES
+('stranger-danger-basics', 'A stranger is someone you don''t know well', 0),
+('stranger-danger-basics', 'Never accept gifts or rides from strangers', 1),
+('stranger-danger-basics', 'Stay close to trusted adults in public', 2),
+('stranger-danger-basics', 'Know your full name, address, and phone number', 3)
+ON CONFLICT DO NOTHING;
+
+-- Insert a sample scenario
+INSERT INTO lesson_scenarios (lesson_id, situation, options, correct_answer_index, explanation, order_index) VALUES
+('stranger-danger-basics', 'A person you don''t know offers you candy and asks you to come to their car. What should you do?',
+ ARRAY['Go with them to get the candy', 'Say no and find a trusted adult immediately', 'Ask them to bring the candy to you'], 1,
+ 'Never go anywhere with a stranger, even if they offer treats. Always say no and find a trusted adult right away.', 0)
+ON CONFLICT DO NOTHING;
+
+-- Insert quiz questions
+INSERT INTO lesson_quiz_questions (lesson_id, question_text, options, correct_answer_index, explanation, order_index) VALUES
+('stranger-danger-basics', 'What should you do if a stranger asks you to help find their lost pet?',
+ ARRAY['Help them look for the pet', 'Say no and walk away', 'Ask your friends to help too'], 1,
+ 'Adults should ask other adults for help, not children. Always say no to strangers asking for help and walk away.', 0)
+ON CONFLICT DO NOTHING;
+</pre>
+                `;
+            }
+            
+            sqlCommands.innerHTML = sql;
+        }
+
+        function generateLessonInsertSQL() {
+            const sqlCommands = document.getElementById('sqlCommands');
+            sqlCommands.innerHTML = `
+<h3>🔧 Insert Sample Lesson Data</h3>
+<p>Your database tables exist but are empty. Run this SQL in your Supabase SQL Editor to add sample lessons:</p>
+<pre>
+-- Insert sample lessons
+INSERT INTO lessons (id, title, description, duration_minutes, difficulty, category, introduction_text, tips) VALUES
+('stranger-danger-basics', 'Stranger Danger Basics', 'Understanding who strangers are and how to stay safe around them', 12, 'easy', 'physical',
+ 'Not all strangers are dangerous, but it''s important to know the safety rules when meeting new people.',
+ ARRAY['Stay close to trusted adults in public places', 'Never go anywhere with someone you don''t know', 'If a stranger approaches you, find a trusted adult right away']),
+('online-safety-basics', 'Online Safety Fundamentals', 'Essential skills for staying safe while gaming, chatting, and browsing online', 20, 'medium', 'online',
+ 'The internet can be fun and educational, but it''s important to know how to protect yourself online.',
+ ARRAY['Never share personal information like your address or phone number', 'Use strong passwords and keep them private', 'Tell a trusted adult if someone online makes you uncomfortable']),
+('understanding-consent', 'Understanding Consent and Personal Autonomy', 'Learning about consent in all aspects of life and relationships', 22, 'hard', 'social',
+ 'Consent is about respecting yourself and others. Understanding consent helps you build healthy, respectful relationships.',
+ ARRAY['Consent must be freely given without pressure or manipulation', 'You can change your mind at any time', 'Respecting consent shows maturity and care for others'])
+ON CONFLICT (id) DO NOTHING;
+
+-- Insert age groups
+INSERT INTO lesson_age_groups (lesson_id, age_group) VALUES
+('stranger-danger-basics', '5-10'),
+('online-safety-basics', '11-15'),
+('understanding-consent', '16-19')
+ON CONFLICT DO NOTHING;
+
+-- Insert key points for stranger danger
+INSERT INTO lesson_key_points (lesson_id, point_text, order_index) VALUES
+('stranger-danger-basics', 'A stranger is someone you don''t know well', 0),
+('stranger-danger-basics', 'Never accept gifts or rides from strangers', 1),
+('stranger-danger-basics', 'Stay close to trusted adults in public', 2),
+('stranger-danger-basics', 'Know your full name, address, and phone number', 3)
+ON CONFLICT DO NOTHING;
+
+-- Insert key points for online safety
+INSERT INTO lesson_key_points (lesson_id, point_text, order_index) VALUES
+('online-safety-basics', 'Never share personal information like your address or phone number', 0),
+('online-safety-basics', 'Use strong, unique passwords for all accounts', 1),
+('online-safety-basics', 'Be careful about what you post - content can be permanent', 2),
+('online-safety-basics', 'Tell a trusted adult if someone online makes you uncomfortable', 3)
+ON CONFLICT DO NOTHING;
+
+-- Insert key points for consent
+INSERT INTO lesson_key_points (lesson_id, point_text, order_index) VALUES
+('understanding-consent', 'Consent means saying yes freely without pressure', 0),
+('understanding-consent', 'You can change your mind at any time', 1),
+('understanding-consent', 'Consent cannot be given if someone is impaired or pressured', 2),
+('understanding-consent', 'Respecting consent builds trust and healthy relationships', 3)
+ON CONFLICT DO NOTHING;
+</pre>
+
+<p><strong>After running this SQL:</strong></p>
+<ol>
+<li>Refresh your application</li>
+<li>The lessons should now appear</li>
+<li>You can add more lessons using the same pattern</li>
+</ol>
+            `;
+        }
+
+        // Auto-run connection test on page load
+        window.addEventListener('load', () => {
+            setTimeout(testConnection, 1000);
+        });
+    </script>
+</body>
+</html>
