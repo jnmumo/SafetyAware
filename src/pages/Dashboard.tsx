@@ -4,8 +4,6 @@ import { AuthUser } from '../services/authService';
 import { authService } from '../services/authService';
 import UserProfile from '../components/UserProfile';
 import DailySafetyStory from '../components/DailySafetyStory';
-import LingoExample from '../components/LingoExample';
-import { useLingo } from '@lingo.dev/react';
 
 interface DashboardProps {
   user: AuthUser;
@@ -15,7 +13,6 @@ interface DashboardProps {
 const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'progress' | 'activity'>('overview');
   const [signingOut, setSigningOut] = useState(false);
-  const lingo = useLingo();
 
   const handleSignOut = async () => {
     // Show confirmation dialog
@@ -68,8 +65,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                 <Smile className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-800">{lingo.t('dashboard_greeting', 'Hi')} {user.name}! 👋</h1>
-                <p className="text-lg text-gray-600">{lingo.t('dashboard_ready_message', 'Ready to learn about staying safe?')}</p>
+                <h1 className="text-3xl font-bold text-gray-800">Hi {user.name}! 👋</h1>
+                <p className="text-lg text-gray-600">Ready to learn about staying safe?</p>
               </div>
             </div>
             <button
@@ -85,12 +82,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
               {signingOut ? (
                 <>
                   <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                  <span className="text-sm font-medium">{lingo.t('sign_out_progress', 'Bye bye...')}</span>
+                  <span className="text-sm font-medium">Bye bye...</span>
                 </>
               ) : (
                 <>
                   <LogOut className="w-4 h-4" />
-                  <span className="text-sm font-medium">{lingo.t('sign_out_button', 'All Done')}</span>
+                  <span className="text-sm font-medium">All Done</span>
                 </>
               )}
             </button>
@@ -103,7 +100,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                 <Star className="w-6 h-6 text-red-600" />
               </div>
               <div className="text-3xl font-bold text-red-600">{user.progress.currentLevel}</div>
-              <div className="text-sm text-gray-600 font-medium">{lingo.t('level', 'Level')}</div>
+              <div className="text-sm text-gray-600 font-medium">Level</div>
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-blue-200 text-center transform hover:scale-105 transition-transform">
@@ -111,7 +108,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                 <BookOpen className="w-6 h-6 text-blue-600" />
               </div>
               <div className="text-3xl font-bold text-blue-600">{user.progress.totalLessonsCompleted}</div>
-              <div className="text-sm text-gray-600 font-medium">{lingo.t('lessons', 'Lessons')}</div>
+              <div className="text-sm text-gray-600 font-medium">Lessons</div>
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-orange-200 text-center transform hover:scale-105 transition-transform">
@@ -119,7 +116,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                 <Fire className="w-6 h-6 text-orange-600" />
               </div>
               <div className="text-3xl font-bold text-orange-600">{user.progress.streakDays}</div>
-              <div className="text-sm text-gray-600 font-medium">{lingo.t('day_streak', 'Day Streak')}</div>
+              <div className="text-sm text-gray-600 font-medium">Day Streak</div>
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-purple-200 text-center transform hover:scale-105 transition-transform">
@@ -127,12 +124,9 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                 <Trophy className="w-6 h-6 text-purple-600" />
               </div>
               <div className="text-3xl font-bold text-purple-600">{user.progress.totalPoints}</div>
-              <div className="text-sm text-gray-600 font-medium">{lingo.t('points', 'Points')}</div>
+              <div className="text-sm text-gray-600 font-medium">Points</div>
             </div>
           </div>
-
-          {/* Lingo Example Component */}
-          <LingoExample />
 
           {/* Big Action Buttons for Young Kids */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -145,12 +139,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                   <BookOpen className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold">{lingo.t('fun_lessons', 'Fun Lessons!')}</h3>
-                  <p className="text-blue-100">{lingo.t('learn_about_safety', 'Learn about staying safe')}</p>
+                  <h3 className="text-2xl font-bold">Fun Lessons!</h3>
+                  <p className="text-blue-100">Learn about staying safe</p>
                 </div>
               </div>
               <div className="flex items-center text-white/90">
-                <span className="text-lg font-medium">{lingo.t('start_learning', 'Start Learning')}</span>
+                <span className="text-lg font-medium">Start Learning</span>
                 <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-2 transition-transform" />
               </div>
             </a>
@@ -164,12 +158,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                   <MessageCircle className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold">{lingo.t('safety_helper', 'Safety Helper!')}</h3>
-                  <p className="text-green-100">{lingo.t('ask_questions', 'Ask questions anytime')}</p>
+                  <h3 className="text-2xl font-bold">Safety Helper!</h3>
+                  <p className="text-green-100">Ask questions anytime</p>
                 </div>
               </div>
               <div className="flex items-center text-white/90">
-                <span className="text-lg font-medium">{lingo.t('ask_questions_button', 'Ask Questions')}</span>
+                <span className="text-lg font-medium">Ask Questions</span>
                 <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-2 transition-transform" />
               </div>
             </a>
@@ -182,8 +176,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                 <Trophy className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">{lingo.t('your_badges', 'Your Badges!')} 🏆</h2>
-                <p className="text-gray-600">{lingo.t('look_what_earned', 'Look what you\'ve earned')}</p>
+                <h2 className="text-2xl font-bold text-gray-800">Your Badges! 🏆</h2>
+                <p className="text-gray-600">Look what you've earned</p>
               </div>
             </div>
             
@@ -204,12 +198,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                 <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Star className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-gray-600 mb-4">{lingo.t('complete_first_lesson', 'Complete your first lesson to earn your first badge!')}</p>
+                <p className="text-gray-600 mb-4">Complete your first lesson to earn your first badge!</p>
                 <a
                   href="/app/lessons"
                   className="inline-flex items-center space-x-2 bg-purple-500 hover:bg-purple-600 text-white font-bold px-6 py-3 rounded-xl transition-colors"
                 >
-                  <span>{lingo.t('start_learning', 'Start Learning')}</span>
+                  <span>Start Learning</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
@@ -220,7 +214,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                 href="/app/achievements"
                 className="inline-flex items-center space-x-2 text-purple-700 hover:text-purple-800 font-bold"
               >
-                <span>{lingo.t('see_all_badges', 'See All Badges')} ({user.achievements.length})</span>
+                <span>See All Badges ({user.achievements.length})</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>
@@ -231,9 +225,9 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Heart className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-2xl font-bold mb-2">{lingo.t('doing_great', 'You\'re Doing Great!')} 🌟</h3>
+            <h3 className="text-2xl font-bold mb-2">You're Doing Great! 🌟</h3>
             <p className="text-lg text-white/90">
-              {lingo.t('keep_learning', 'Keep learning about safety and you\'ll become a safety superstar!')}
+              Keep learning about safety and you'll become a safety superstar!
             </p>
           </div>
         </div>
@@ -244,8 +238,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
   // Regular Dashboard for older kids (11-15 and 16-19)
   const quickActions = [
     {
-      title: lingo.t('ai_video_chat', 'AI Video Chat'),
-      description: lingo.t('talk_with_ai', 'Talk with AI safety expert'),
+      title: 'AI Video Chat',
+      description: 'Talk with AI safety expert',
       icon: Video,
       color: 'from-purple-500 to-pink-600',
       href: '/app/videos',
@@ -253,30 +247,30 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
       highlight: true
     },
     {
-      title: lingo.t('ai_lessons', 'AI Lessons'),
-      description: lingo.t('generate_custom_lessons', 'Generate custom lessons'),
+      title: 'AI Lessons',
+      description: 'Generate custom lessons',
       icon: Sparkles,
       color: 'from-indigo-500 to-purple-600',
       href: '/app/ai-lessons',
       badge: 'AI'
     },
     {
-      title: lingo.t('interactive_lessons', 'Interactive Lessons'),
-      description: lingo.t('structured_learning', 'Structured learning paths'),
+      title: 'Interactive Lessons',
+      description: 'Structured learning paths',
       icon: BookOpen,
       color: 'from-blue-500 to-cyan-600',
       href: '/app/lessons'
     },
     {
-      title: lingo.t('safety_chat', 'Safety Chat'),
-      description: lingo.t('ai_assistant', '24/7 AI assistant'),
+      title: 'Safety Chat',
+      description: '24/7 AI assistant',
       icon: MessageCircle,
       color: 'from-green-500 to-emerald-600',
       href: '/app/chat'
     },
     {
-      title: lingo.t('achievements', 'Achievements'),
-      description: lingo.t('track_progress', 'Track your progress'),
+      title: 'Achievements',
+      description: 'Track your progress',
       icon: Award,
       color: 'from-orange-500 to-red-600',
       href: '/app/achievements'
@@ -285,36 +279,36 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
 
   const recentActivity = [
     {
-      title: lingo.t('generated_ai_lesson', 'Generated AI lesson on "Online Privacy"'),
-      time: lingo.t('time_30_min', '30 minutes ago'),
+      title: 'Generated AI lesson on "Online Privacy"',
+      time: '30 minutes ago',
       icon: Brain,
       type: 'ai-lesson',
       color: 'text-purple-600'
     },
     {
-      title: lingo.t('watched_video', 'Watched personalized safety video'),
-      time: lingo.t('time_1_hour', '1 hour ago'),
+      title: 'Watched personalized safety video',
+      time: '1 hour ago',
       icon: Video,
       type: 'video',
       color: 'text-pink-600'
     },
     {
-      title: lingo.t('completed_lesson', 'Completed "Stranger Safety Basics"'),
-      time: lingo.t('time_2_hours', '2 hours ago'),
+      title: 'Completed "Stranger Safety Basics"',
+      time: '2 hours ago',
       icon: CheckCircle,
       type: 'lesson',
       color: 'text-blue-600'
     },
     {
-      title: lingo.t('earned_badge', 'Earned "Safety Explorer" badge'),
-      time: lingo.t('time_1_day', '1 day ago'),
+      title: 'Earned "Safety Explorer" badge',
+      time: '1 day ago',
       icon: Trophy,
       type: 'achievement',
       color: 'text-orange-600'
     },
     {
-      title: lingo.t('asked_about', 'Asked about cyberbullying'),
-      time: lingo.t('time_2_days', '2 days ago'),
+      title: 'Asked about cyberbullying',
+      time: '2 days ago',
       icon: MessageCircle,
       type: 'chat',
       color: 'text-green-600'
@@ -323,56 +317,56 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
 
   const weeklyStats = [
     { 
-      label: lingo.t('lessons_completed', 'Lessons Completed'), 
+      label: 'Lessons Completed', 
       value: user.progress.totalLessonsCompleted, 
       icon: BookOpen, 
       color: 'text-blue-600',
       bgColor: 'bg-blue-100',
-      change: lingo.t('plus_2_week', '+2 this week')
+      change: '+2 this week'
     },
     { 
-      label: lingo.t('ai_lessons_generated', 'AI Lessons Generated'), 
+      label: 'AI Lessons Generated', 
       value: '5', 
       icon: Sparkles, 
       color: 'text-purple-600',
       bgColor: 'bg-purple-100',
-      change: lingo.t('plus_3_week', '+3 this week')
+      change: '+3 this week'
     },
     { 
-      label: lingo.t('questions_asked', 'Questions Asked'), 
+      label: 'Questions Asked', 
       value: '24', 
       icon: MessageCircle, 
       color: 'text-green-600',
       bgColor: 'bg-green-100',
-      change: lingo.t('plus_8_week', '+8 this week')
+      change: '+8 this week'
     },
     { 
-      label: lingo.t('learning_streak', 'Learning Streak'), 
+      label: 'Learning Streak', 
       value: user.progress.streakDays, 
       icon: Fire, 
       color: 'text-orange-600',
       bgColor: 'bg-orange-100',
-      change: lingo.t('keep_it_up', 'Keep it up!')
+      change: 'Keep it up!'
     }
   ];
 
   const learningGoals = [
     {
-      title: lingo.t('complete_10_lessons', 'Complete 10 Lessons'),
+      title: 'Complete 10 Lessons',
       progress: (user.progress.totalLessonsCompleted / 10) * 100,
       current: user.progress.totalLessonsCompleted,
       target: 10,
       color: 'bg-blue-500'
     },
     {
-      title: lingo.t('maintain_7day_streak', 'Maintain 7-Day Streak'),
+      title: 'Maintain 7-Day Streak',
       progress: (user.progress.streakDays / 7) * 100,
       current: user.progress.streakDays,
       target: 7,
       color: 'bg-orange-500'
     },
     {
-      title: lingo.t('earn_1000_points', 'Earn 1000 Points'),
+      title: 'Earn 1000 Points',
       progress: (user.progress.totalPoints / 1000) * 100,
       current: user.progress.totalPoints,
       target: 1000,
@@ -382,18 +376,18 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return lingo.t('good_morning', 'Good morning');
-    if (hour < 17) return lingo.t('good_afternoon', 'Good afternoon');
-    return lingo.t('good_evening', 'Good evening');
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
   };
 
   const getMotivationalMessage = () => {
     const messages = [
-      lingo.t('motivational_1', "You're building important life skills! 🌟"),
-      lingo.t('motivational_2', "Every lesson makes you safer and smarter! 🧠"),
-      lingo.t('motivational_3', "Your safety journey is inspiring! 💪"),
-      lingo.t('motivational_4', "Keep up the amazing progress! 🚀"),
-      lingo.t('motivational_5', "You're becoming a safety expert! 🛡️")
+      "You're building important life skills! 🌟",
+      "Every lesson makes you safer and smarter! 🧠",
+      "Your safety journey is inspiring! 💪",
+      "Keep up the amazing progress! 🚀",
+      "You're becoming a safety expert! 🛡️"
     ];
     return messages[Math.floor(Math.random() * messages.length)];
   };
@@ -437,8 +431,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
       {/* Dashboard Header with Sign Out */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">{lingo.t('dashboard', 'Dashboard')}</h1>
-          <p className="text-gray-600">{lingo.t('welcome_back', 'Welcome back')}, {user.name}!</p>
+          <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+          <p className="text-gray-600">Welcome back, {user.name}!</p>
         </div>
         <button
           onClick={handleSignOut}
@@ -453,12 +447,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
           {signingOut ? (
             <>
               <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-              <span className="text-sm font-medium">{lingo.t('signing_out', 'Signing out...')}</span>
+              <span className="text-sm font-medium">Signing out...</span>
             </>
           ) : (
             <>
               <LogOut className="w-4 h-4" />
-              <span className="text-sm font-medium">{lingo.t('sign_out', 'Sign Out')}</span>
+              <span className="text-sm font-medium">Sign Out</span>
             </>
           )}
         </button>
@@ -496,7 +490,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                 </div>
                 <div className="flex items-center space-x-1">
                   <Fire className="w-4 h-4" />
-                  <span>{user.progress.streakDays} {lingo.t('day_streak', 'day streak')}</span>
+                  <span>{user.progress.streakDays} day streak</span>
                 </div>
               </div>
             </div>
@@ -504,11 +498,11 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
             <div className="hidden md:flex items-center space-x-4">
               <div className="text-center">
                 <div className="text-3xl font-bold">{user.progress.currentLevel}</div>
-                <div className="text-sm text-blue-100">{lingo.t('level', 'Level')}</div>
+                <div className="text-sm text-blue-100">Level</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold">{user.progress.totalPoints}</div>
-                <div className="text-sm text-blue-100">{lingo.t('points', 'Points')}</div>
+                <div className="text-sm text-blue-100">Points</div>
               </div>
             </div>
           </div>
@@ -520,29 +514,26 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
               className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium"
             >
               <Video className="w-4 h-4" />
-              <span>{lingo.t('start_ai_video', 'Start AI Video Chat')}</span>
-              <span className="bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-full text-xs font-bold">{lingo.t('new', 'NEW')}</span>
+              <span>Start AI Video Chat</span>
+              <span className="bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-full text-xs font-bold">NEW</span>
             </a>
             <a
               href="/app/ai-lessons"
               className="inline-flex items-center space-x-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium"
             >
               <Sparkles className="w-4 h-4" />
-              <span>{lingo.t('generate_ai_lesson', 'Generate AI Lesson')}</span>
+              <span>Generate AI Lesson</span>
             </a>
           </div>
         </div>
       </div>
 
-      {/* Lingo Example Component */}
-      <LingoExample />
-
       {/* Navigation Tabs */}
       <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
         {[
-          { id: 'overview', label: lingo.t('overview', 'Overview'), icon: TrendingUp },
-          { id: 'progress', label: lingo.t('progress', 'Progress'), icon: Target },
-          { id: 'activity', label: lingo.t('activity', 'Activity'), icon: Clock }
+          { id: 'overview', label: 'Overview', icon: TrendingUp },
+          { id: 'progress', label: 'Progress', icon: Target },
+          { id: 'activity', label: 'Activity', icon: Clock }
         ].map(tab => (
           <button
             key={tab.id}
@@ -569,7 +560,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
               <Zap className="w-6 h-6 mr-2 text-blue-600" />
-              {lingo.t('quick_actions', 'Quick Actions')}
+              Quick Actions
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {quickActions.map(({ title, description, icon: Icon, color, href, badge, highlight }) => (
@@ -604,14 +595,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                   {highlight && (
                     <div className="mt-6">
                       <div className="inline-flex items-center space-x-2 text-blue-600 text-sm font-medium">
-                        <span>{lingo.t('try_now', 'Try Now')}</span>
+                        <span>Try Now</span>
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>
                   )}
                   
                   <div className="flex items-center text-blue-600 text-sm font-medium mt-4">
-                    <span>{lingo.t('get_started', 'Get started')}</span>
+                    <span>Get started</span>
                     <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </a>
@@ -623,7 +614,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
           <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200">
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
               <Trophy className="w-5 h-5 mr-2 text-yellow-600" />
-              {lingo.t('your_achievements', 'Your Achievements')}
+              Your Achievements
             </h2>
             {user.achievements.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -641,7 +632,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                           <h3 className="font-medium text-gray-800">{achievement.title}</h3>
                           <p className="text-sm text-gray-600">{achievement.description}</p>
                           <p className="text-xs text-gray-500 mt-1">
-                            {lingo.t('unlocked', 'Unlocked')} {achievement.unlockedAt.toLocaleDateString()}
+                            Unlocked {achievement.unlockedAt.toLocaleDateString()}
                           </p>
                         </div>
                       </div>
@@ -652,12 +643,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
             ) : (
               <div className="text-center py-8">
                 <Trophy className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-                <p className="text-gray-600 mb-2">{lingo.t('complete_first_lesson', 'Complete your first lesson to earn achievements!')}</p>
+                <p className="text-gray-600 mb-2">Complete your first lesson to earn achievements!</p>
                 <a
                   href="/app/lessons"
                   className="inline-flex items-center space-x-2 text-yellow-700 hover:text-yellow-800 font-medium"
                 >
-                  <span>{lingo.t('start_learning', 'Start learning')}</span>
+                  <span>Start learning</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
@@ -668,7 +659,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                   href="/app/achievements"
                   className="inline-flex items-center space-x-2 text-yellow-700 hover:text-yellow-800 font-medium"
                 >
-                  <span>{lingo.t('view_all_achievements', 'View all achievements')} ({user.achievements.length})</span>
+                  <span>View all achievements ({user.achievements.length})</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
@@ -681,7 +672,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
         <div className="space-y-8">
           {/* Weekly Stats */}
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">{lingo.t('this_weeks_progress', 'This Week\'s Progress')}</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">This Week's Progress</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {weeklyStats.map(({ label, value, icon: Icon, color, bgColor, change }) => (
                 <div key={label} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -700,7 +691,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
 
           {/* Learning Goals */}
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">{lingo.t('learning_goals', 'Learning Goals')}</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Learning Goals</h2>
             <div className="space-y-4">
               {learningGoals.map(({ title, progress, current, target, color }) => (
                 <div key={title} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
@@ -714,7 +705,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
                       style={{ width: `${Math.min(progress, 100)}%` }}
                     />
                   </div>
-                  <p className="text-sm text-gray-600">{Math.round(progress)}% {lingo.t('complete', 'complete')}</p>
+                  <p className="text-sm text-gray-600">{Math.round(progress)}% complete</p>
                 </div>
               ))}
             </div>
@@ -724,7 +715,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
           <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200">
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
               <Trophy className="w-5 h-5 mr-2 text-yellow-600" />
-              {lingo.t('all_achievements', 'All Achievements')} ({user.achievements.length})
+              All Achievements ({user.achievements.length})
             </h2>
             {user.achievements.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -763,12 +754,12 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
             ) : (
               <div className="text-center py-8">
                 <Trophy className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-                <p className="text-gray-600 mb-2">{lingo.t('complete_first_lesson', 'Complete your first lesson to earn achievements!')}</p>
+                <p className="text-gray-600 mb-2">Complete your first lesson to earn achievements!</p>
                 <a
                   href="/app/lessons"
                   className="inline-flex items-center space-x-2 text-yellow-700 hover:text-yellow-800 font-medium"
                 >
-                  <span>{lingo.t('start_learning', 'Start learning')}</span>
+                  <span>Start learning</span>
                   <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
@@ -783,7 +774,7 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
           <div>
             <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
               <Clock className="w-6 h-6 mr-2 text-blue-600" />
-              {lingo.t('recent_activity', 'Recent Activity')}
+              Recent Activity
             </h2>
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="divide-y divide-gray-100">
@@ -819,14 +810,14 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onUpdateProfile }) => {
       <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
         <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
           <Shield className="w-5 h-5 mr-2 text-blue-600" />
-          {lingo.t('safety_tip_day', 'Safety Tip of the Day')}
+          Safety Tip of the Day
         </h2>
         <div className="bg-white rounded-lg p-4 shadow-sm">
           <p className="text-gray-700 mb-2">
-            <strong>{lingo.t('remember', 'Remember')}:</strong> {lingo.t('trust_instincts', 'Trust your instincts! If something feels wrong or makes you uncomfortable, it\'s always okay to say "no" and seek help from a trusted adult.')}
+            <strong>Remember:</strong> Trust your instincts! If something feels wrong or makes you uncomfortable, it's always okay to say "no" and seek help from a trusted adult.
           </p>
           <p className="text-sm text-gray-500">
-            {lingo.t('safety_important', 'Your safety is the most important thing, and there are always people ready to help you.')}
+            Your safety is the most important thing, and there are always people ready to help you.
           </p>
         </div>
       </div>
