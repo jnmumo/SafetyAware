@@ -1,7 +1,0 @@
-{
-  "libs": ["@lingo.dev/react"],
-  "apiKey": "api_z2iyrbr0ec2dwygve1sy1vg5",
-  "baseUrl": "https://api.lingo.dev",
-  "srcDir": "src",
-  "outDir": "src/lingo-assets"
-}

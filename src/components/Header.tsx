@@ -2,17 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Menu, X, Video, Sparkles, LogIn } from 'lucide-react';
 import { useState } from 'react';
-import { useLingo } from '@lingo.dev/react';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const lingo = useLingo();
 
   const navItems = [
-    { label: lingo.t('ai_conversations', 'AI Conversations'), href: '#features', highlight: true },
-    { label: lingo.t('age_groups', 'Age Groups'), href: '#age-groups' },
-    { label: lingo.t('success_stories', 'Success Stories'), href: '#testimonials' },
-    { label: lingo.t('platform', 'Platform'), href: '#features' }
+    { label: 'AI Conversations', href: '#features', highlight: true },
+    { label: 'Age Groups', href: '#age-groups' },
+    { label: 'Success Stories', href: '#testimonials' },
+    { label: 'Platform', href: '#features' }
   ];
 
   return (
@@ -28,7 +26,7 @@ const Header: React.FC = () => {
             </div>
             <span className="text-xl font-bold text-gray-900">Safety Aware Circle</span>
             <div className="ml-2 px-2 py-1 bg-gradient-to-r from-purple-100 to-blue-100 rounded-full">
-              <span className="text-xs font-semibold text-purple-700">{lingo.t('ai_powered', 'AI-Powered')}</span>
+              <span className="text-xs font-semibold text-purple-700">AI-Powered</span>
             </div>
           </div>
 
@@ -56,32 +54,17 @@ const Header: React.FC = () => {
           {/* Language Selector */}
           <div className="hidden md:flex items-center space-x-2 mr-4">
             <button 
-              onClick={() => lingo.setLocale('en')}
-              className={`px-2 py-1 text-xs font-medium rounded ${
-                lingo.locale === 'en' 
-                  ? 'bg-blue-100 text-blue-800' 
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
+              className="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800"
             >
               EN
             </button>
             <button 
-              onClick={() => lingo.setLocale('es')}
-              className={`px-2 py-1 text-xs font-medium rounded ${
-                lingo.locale === 'es' 
-                  ? 'bg-blue-100 text-blue-800' 
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
+              className="px-2 py-1 text-xs font-medium rounded text-gray-600 hover:bg-gray-100"
             >
               ES
             </button>
             <button 
-              onClick={() => lingo.setLocale('fr')}
-              className={`px-2 py-1 text-xs font-medium rounded ${
-                lingo.locale === 'fr' 
-                  ? 'bg-blue-100 text-blue-800' 
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
+              className="px-2 py-1 text-xs font-medium rounded text-gray-600 hover:bg-gray-100"
             >
               FR
             </button>
@@ -95,7 +78,7 @@ const Header: React.FC = () => {
               className="group bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25 flex items-center space-x-2"
             >
               <LogIn className="w-4 h-4" />
-              <span>{lingo.t('login_register', 'Log In/ Register')}</span>
+              <span>Log In/ Register</span>
               <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
             </Link>
           </div>
@@ -127,41 +110,26 @@ const Header: React.FC = () => {
                   <div className="flex items-center space-x-2">
                     {item.highlight && <Video className="w-4 h-4" />}
                     <span>{item.label}</span>
-                    {item.highlight && <span className="text-xs bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-full font-bold">{lingo.t('new', 'NEW')}</span>}
+                    {item.highlight && <span className="text-xs bg-yellow-400 text-yellow-900 px-2 py-0.5 rounded-full font-bold">NEW</span>}
                   </div>
                 </a>
               ))}
               
               {/* Mobile Language Selector */}
               <div className="flex items-center space-x-2 px-2 py-2">
-                <span className="text-xs text-gray-500">{lingo.t('language', 'Language')}:</span>
+                <span className="text-xs text-gray-500">Language:</span>
                 <button 
-                  onClick={() => lingo.setLocale('en')}
-                  className={`px-2 py-1 text-xs font-medium rounded ${
-                    lingo.locale === 'en' 
-                      ? 'bg-blue-100 text-blue-800' 
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
+                  className="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800"
                 >
                   EN
                 </button>
                 <button 
-                  onClick={() => lingo.setLocale('es')}
-                  className={`px-2 py-1 text-xs font-medium rounded ${
-                    lingo.locale === 'es' 
-                      ? 'bg-blue-100 text-blue-800' 
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
+                  className="px-2 py-1 text-xs font-medium rounded text-gray-600 hover:bg-gray-100"
                 >
                   ES
                 </button>
                 <button 
-                  onClick={() => lingo.setLocale('fr')}
-                  className={`px-2 py-1 text-xs font-medium rounded ${
-                    lingo.locale === 'fr' 
-                      ? 'bg-blue-100 text-blue-800' 
-                      : 'text-gray-600 hover:bg-gray-100'
-                  }`}
+                  className="px-2 py-1 text-xs font-medium rounded text-gray-600 hover:bg-gray-100"
                 >
                   FR
                 </button>
@@ -174,7 +142,7 @@ const Header: React.FC = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 <LogIn className="w-4 h-4" />
-                <span>{lingo.t('login_register', 'Log In/Register')}</span>
+                <span>Log In/Register</span>
                 <Sparkles className="w-4 h-4" />
               </Link>
             </div>
