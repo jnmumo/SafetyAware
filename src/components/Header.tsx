@@ -51,25 +51,6 @@ const Header: React.FC = () => {
             ))}
           </nav>
 
-          {/* Language Selector */}
-          <div className="hidden md:flex items-center space-x-2 mr-4">
-            <button 
-              className="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800"
-            >
-              EN
-            </button>
-            <button 
-              className="px-2 py-1 text-xs font-medium rounded text-gray-600 hover:bg-gray-100"
-            >
-              ES
-            </button>
-            <button 
-              className="px-2 py-1 text-xs font-medium rounded text-gray-600 hover:bg-gray-100"
-            >
-              FR
-            </button>
-          </div>
-
           {/* CTA Button */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Log In Button */}
@@ -114,26 +95,6 @@ const Header: React.FC = () => {
                   </div>
                 </a>
               ))}
-              
-              {/* Mobile Language Selector */}
-              <div className="flex items-center space-x-2 px-2 py-2">
-                <span className="text-xs text-gray-500">Language:</span>
-                <button 
-                  className="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800"
-                >
-                  EN
-                </button>
-                <button 
-                  className="px-2 py-1 text-xs font-medium rounded text-gray-600 hover:bg-gray-100"
-                >
-                  ES
-                </button>
-                <button 
-                  className="px-2 py-1 text-xs font-medium rounded text-gray-600 hover:bg-gray-100"
-                >
-                  FR
-                </button>
-              </div>
               
               {/* Mobile Log In Button */}
               <Link
