@@ -221,7 +221,7 @@ const AuthPage: React.FC = () => {
             <div className="flex items-start space-x-3">
               <Shield className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
               <div>
-                <h3 className="font-medium text-blue-800 mb-1">Your Safety & Privacy</h3>
+                <h3 className="font-medium text-blue-800 mb-1">LOG IN DETAILS</h3>
                 <p className="text-sm text-blue-700">
                   Use The following login credentials. Ages 5-10 username: younglearners@example.com. Password: youngleaners.
                   Ages 11-15 username teenguardian@example.com, password:teengurardian. 
